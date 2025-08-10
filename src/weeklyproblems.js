@@ -43,10 +43,17 @@ Output ONLY valid JSON, no explanations.
 async function addWeeklyProblems() {
     try {
         const problems = await generate3Problems();
+        const date = new Intl.DateTimeFormat('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'Asia/Kolkata'
+        }).format(new Date());
 
         await prisma.week.create({
             data: {
-                createdAt: new Date(),
+                createdAt: date,
                 problems: {
                     create: problems,
                 },
