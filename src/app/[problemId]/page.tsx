@@ -1,31 +1,52 @@
-import prisma from "../../../lib/prisma"
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/components/ui/resizable"
-import CodeEditor from "@/components/CodeEditor"
-import { useCodeStore } from "@/store/codeStore"
-import OutputWindow from "@/components/OutputWindow"
+} from "@/components/ui/resizable";
+import CodeEditor from "@/components/CodeEditor";
+import OutputWindow from "@/components/OutputWindow";
+import { useCodeStore } from "@/store/codeStore";
+import prisma from "../../../lib/prisma";
 
-export default async function ProblemPage({ params }: { params: Promise<{ problemId: string }> }) {
-  const {setLocalProblemId} = useCodeStore()
-  const { problemId } = await params
+// ✅ This stays as a Server Component
+export default async function ProblemPage({
+  params,
+}: {
+  params: { problemId: string };
+}) {
+  const problemId = Number(params.problemId);
+
+  // Fetch the problem from Prisma (server-side)
   const problem = await prisma.problem.findUnique({
-    where: { id: Number(problemId) }
-  })
-  setLocalProblemId(Number(problemId))
-  // console.log(problem)
+    where: { id: problemId },
+  });
+
+  if (!problem) {
+    return <div className="p-4">Problem not found</div>;
+  }
+
+  // ✅ Safely pass only required props to client components
   return (
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel className="">
-          <div>
-            <h1 className={`p-1 font-semibold text-3xl ${problem?.difficulty == 'EASY' ? 'text-green-500' : problem?.difficulty === "MEDIUM" ? 'text-yellow-500' : 'text-red-500'}`}>{problemId}. {problem?.title}</h1>
+        <ResizablePanel>
+          <div className="p-4">
+            <h1
+              className={`p-1 font-semibold text-3xl ${problem?.difficulty === "EASY"
+                  ? "text-green-500"
+                  : problem?.difficulty === "MEDIUM"
+                    ? "text-yellow-500"
+                    : "text-red-500"
+                }`}
+            >
+              {problemId}. {problem?.title}
+            </h1>
             <p>
               <strong>Description:</strong> {problem?.description}
             </p>
-              {Array.isArray(problem?.examples) && problem.examples.map((example, index) => {
+
+            {Array.isArray(problem?.examples) &&
+              problem.examples.map((example, index) => {
                 if (
                   example &&
                   typeof example === "object" &&
@@ -33,10 +54,13 @@ export default async function ProblemPage({ params }: { params: Promise<{ proble
                   "output" in example
                 ) {
                   return (
-                    <div key={index}>
+                    <div key={index} className="mt-2">
                       <p>Example {index + 1}:</p>
-                        <strong className="ml-3">Input:</strong> {(example as { input: string; output: string }).input} <br />
-                        <strong className="ml-3">Output:</strong> {(example as { input: string; output: string }).output}
+                      <strong className="ml-3">Input:</strong>{" "}
+                      {(example as { input: string; output: string }).input}
+                      <br />
+                      <strong className="ml-3">Output:</strong>{" "}
+                      {(example as { input: string; output: string }).output}
                     </div>
                   );
                 }
@@ -44,20 +68,43 @@ export default async function ProblemPage({ params }: { params: Promise<{ proble
               })}
           </div>
         </ResizablePanel>
+
         <ResizableHandle withHandle />
+
         <ResizablePanel>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel>
-              <CodeEditor />
+              {/* Pass problemId to the editor via Zustand initialization */}
+              <CodeEditor problemId={problemId} />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel>
-              <OutputWindow /> 
+              {/* Pass test cases as props to OutputWindow */}
+              <OutputWindow
+                testCases={
+                  Array.isArray(problem.examples)
+                    ? problem.examples
+                        .filter(
+                          (ex) =>
+                            ex &&
+                            typeof ex === "object" &&
+                            "input" in ex &&
+                            "output" in ex
+                        )
+                        .map(
+                          (ex) =>
+                            ({
+                              input: (ex as { input: string; output: string }).input,
+                              output: (ex as { input: string; output: string }).output,
+                            } as { input: string; output: string })
+                        )
+                    : []
+                }
+              />
             </ResizablePanel>
           </ResizablePanelGroup>
-
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
-  )
+  );
 }
