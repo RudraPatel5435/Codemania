@@ -1,4 +1,3 @@
-import Link from "next/link"
 import prisma from "../../../lib/prisma"
 import {
   ResizableHandle,
@@ -6,13 +5,17 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import CodeEditor from "@/components/CodeEditor"
+import { useCodeStore } from "@/store/codeStore"
+import OutputWindow from "@/components/OutputWindow"
 
 export default async function ProblemPage({ params }: { params: Promise<{ problemId: string }> }) {
+  const {setLocalProblemId} = useCodeStore()
   const { problemId } = await params
   const problem = await prisma.problem.findUnique({
     where: { id: Number(problemId) }
   })
-  console.log(problem)
+  setLocalProblemId(Number(problemId))
+  // console.log(problem)
   return (
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
@@ -49,7 +52,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ proble
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel>
-              Three
+              <OutputWindow /> 
             </ResizablePanel>
           </ResizablePanelGroup>
 

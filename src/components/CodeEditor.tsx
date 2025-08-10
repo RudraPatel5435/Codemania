@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Select,
@@ -9,15 +9,16 @@ import {
 } from "@/components/ui/select"
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import axios from "axios";
+import { useCodeStore } from "@/store/codeStore";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
 export default function CodeEditor() {
-  const [code, setCode] = useState("// start coding here...");
-  const [language, setLanguage] = useState("javascript");
+  const { code, setCode, language, setLanguage } = useCodeStore();
 
   return (
-    <div className="h-full ">
+    <div className="h-full">
 
       <div className="flex items-center gap-5 p-2">
         <label className="ml-10">Language:</label>
