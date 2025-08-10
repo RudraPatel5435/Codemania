@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Week {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  problems  Problem[] // One week has many problems
+}
+
+model Problem {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  difficulty  String   // "Easy", "Medium", "Hard"
+  examples    Json
+  testCases   Json
+  weekId      Int
+  week        Week     @relation(fields: [weekId], references: [id])
+}
