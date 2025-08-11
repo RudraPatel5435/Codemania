@@ -9,11 +9,12 @@ import prisma from "../../../../lib/prisma";
 import { Badge } from "@/components/ui/badge";
 import { Info } from "lucide-react";
 
-export default async function ProblemPage({ params }: { params: { problemId: string } }) {
-  const problemId = Number(params.problemId);
+export default async function ProblemPage({ params }: { params: Promise<{ problemId: string }>}) {
+  const { problemId } = await params;
+  const problemIdNumber = Number(problemId);
 
   const problem = await prisma.problem.findUnique({
-    where: { id: problemId },
+    where: { id: problemIdNumber },
   });
 
   if (!problem) {
@@ -35,7 +36,7 @@ export default async function ProblemPage({ params }: { params: { problemId: str
             {/* Header: Title + Badge */}
             <div className="flex items-center justify-between mb-2">
               <h1 className="text-2xl md:text-3xl font-extrabold text-purple-400">
-                {problemId}. {problem.title}
+                {problemIdNumber}. {problem.title}
               </h1>
               <Badge className={`${difficultyColors[problem.difficulty as keyof typeof difficultyColors]} px-4 py-1 rounded-lg text-sm font-semibold`}>
                 {problem.difficulty}
@@ -93,7 +94,7 @@ export default async function ProblemPage({ params }: { params: { problemId: str
                   💻 Code Editor
                 </div>
                 <div className="flex-1">
-                  <CodeEditor problemId={problemId} />
+                  <CodeEditor problemId={problemIdNumber} />
                 </div>
               </div>
             </ResizablePanel>
