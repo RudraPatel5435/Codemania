@@ -53,7 +53,7 @@ async function addWeeklyProblems() {
 
         await prisma.week.create({
             data: {
-                createdAt: date,
+                createdAt: new Date(),
                 problems: {
                     create: problems,
                 },
