@@ -14,12 +14,93 @@ model Week {
 }
 
 model Problem {
+  id           Int       @id @default(autoincrement())
+  title        String
+  description  String
+  constraints  String[]  // Array of constraints
+  tags         String[]  // Array of problem tags/topics
+  hints        String[]  // Array of hints
+  difficulty   String    // "EASY", "MEDIUM", "HARD"
+  examples     Json      // [{input, output, explanation}, ...]
+  testCases    Json      // [{input, output}, ...]
+  
+  weekId       Int
+  week         Week      @relation(fields: [weekId], references: [id])
+
+  // Users who solved this problem
+  solves       Solve[]
+
+  relatedProblems Problem[] @relation("RelatedProblems")
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  username      String     @unique
+  profileImage  String?
+  accountType   String     // "free" or "premium"
+  bio           String?
+  joinDate      DateTime   @default(now())
+  
+  streak        Int        @default(0)
+  totalSolved   Int        @default(0)
+
+  // Problems solved with details
+  solves        Solve[]
+
+  // Comments made by the user
+  comments      Comment[]
+
+  // Badges & Achievements
+  badges         Badge[]
+  achievements   Achievement[]
+
+  // Leaderboard positioning
+  rank           Int?
+  points         Int?       @default(0)
+}
+
+model Solve {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  problemId   Int
+  solvedAt    DateTime @default(now())
+  language    String
+  runtimeMs   Int?
+  code        String
+  status      String // 'accepted', 'wrong_answer', 'TLE', etc.
+
+  user        User     @relation(fields: [userId], references: [id])
+  problem     Problem  @relation(fields: [problemId], references: [id])
+}
+
+model Comment {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  problemId   Int
+  content     String
+  postedAt    DateTime @default(now())
+  parentCommentId Int?     // for threaded replies
+
+  user        User     @relation(fields: [userId], references: [id])
+  problem     Problem  @relation(fields: [problemId], references: [id])
+  parentComment   Comment? @relation("CommentThreads", fields: [parentCommentId], references: [id])
+  replies         Comment[] @relation("CommentThreads")
+}
+
+model Badge {
+  id          Int      @id @default(autoincrement())
+  name        String
+  earnedAt    DateTime @default(now())
+  userId      Int
+
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Achievement {
   id          Int      @id @default(autoincrement())
   title       String
-  description String
-  difficulty  String   // "Easy", "Medium", "Hard"
-  examples    Json
-  testCases   Json
-  weekId      Int
-  week        Week     @relation(fields: [weekId], references: [id])
+  earnedAt    DateTime @default(now())
+  userId      Int
+
+  user        User     @relation(fields: [userId], references: [id])
 }

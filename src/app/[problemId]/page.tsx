@@ -3,12 +3,10 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import prisma from "../../../lib/prisma";
 import CodeEditor from "@/components/CodeEditor";
 import OutputWindow from "@/components/OutputWindow";
-import { useCodeStore } from "@/store/codeStore";
-import prisma from "../../../lib/prisma";
 
-// ✅ This stays as a Server Component
 export default async function ProblemPage({
   params,
 }: {
@@ -16,91 +14,130 @@ export default async function ProblemPage({
 }) {
   const problemId = Number(params.problemId);
 
-  // Fetch the problem from Prisma (server-side)
   const problem = await prisma.problem.findUnique({
     where: { id: problemId },
   });
 
   if (!problem) {
-    return <div className="p-4">Problem not found</div>;
+    return (
+      <div className="p-6 text-center text-lg text-red-400">
+        Problem not found
+      </div>
+    );
   }
 
-  // ✅ Safely pass only required props to client components
-  return (
-    <div className="h-screen">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel>
-          <div className="p-4">
-            <h1
-              className={`p-1 font-semibold text-3xl ${problem?.difficulty === "EASY"
-                  ? "text-green-500"
-                  : problem?.difficulty === "MEDIUM"
-                    ? "text-yellow-500"
-                    : "text-red-500"
-                }`}
-            >
-              {problemId}. {problem?.title}
-            </h1>
-            <p>
-              <strong>Description:</strong> {problem?.description}
-            </p>
+  const difficultyColors: Record<string, string> = {
+    EASY: "bg-green-500/20 text-green-400 border border-green-500/30",
+    MEDIUM: "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30",
+    HARD: "bg-red-500/20 text-red-400 border border-red-500/30",
+  };
 
-            {Array.isArray(problem?.examples) &&
-              problem.examples.map((example, index) => {
-                if (
-                  example &&
-                  typeof example === "object" &&
-                  "input" in example &&
-                  "output" in example
-                ) {
-                  return (
-                    <div key={index} className="mt-2">
-                      <p>Example {index + 1}:</p>
-                      <strong className="ml-3">Input:</strong>{" "}
-                      {(example as { input: string; output: string }).input}
-                      <br />
-                      <strong className="ml-3">Output:</strong>{" "}
-                      {(example as { input: string; output: string }).output}
-                    </div>
-                  );
-                }
-                return null;
-              })}
+  return (
+    <div className="h-screen bg-neutral-950 text-white">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel
+          className="border-r border-neutral-800 bg-neutral-900"
+        >
+          <div className="p-6 overflow-y-auto h-full space-y-6">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold text-purple-400">
+                {problemId}. {problem.title}
+              </h1>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium ${difficultyColors[problem.difficulty]}`}
+              >
+                {problem.difficulty}
+              </span>
+            </div>
+
+            {/* Description */}
+            <div className="bg-neutral-800 rounded-lg p-4 text-sm leading-relaxed whitespace-pre-line border border-neutral-700">
+              {problem.description}
+            </div>
+
+            {/* Examples */}
+            {Array.isArray(problem.examples) &&
+              problem.examples.length > 0 && (
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold text-purple-300">
+                    Examples
+                  </h2>
+                  {problem.examples.map((example, index) => (
+                    example &&
+                    typeof example === "object" &&
+                    "input" in example &&
+                    "output" in example && (
+                      <div
+                        key={index}
+                        className="bg-neutral-800 p-3 rounded-lg space-y-1 border border-neutral-700"
+                      >
+                        <p className="text-sm font-medium text-gray-400">
+                          Example {index + 1}
+                        </p>
+                        <div className="pl-3">
+                          <p>
+                            <span className="font-semibold text-purple-300">Input:</span>{" "}
+                            {(example as { input: string; output: string }).input}
+                          </p>
+                          <p>
+                            <span className="font-semibold text-purple-300">Output:</span>{" "}
+                            {(example as { input: string; output: string }).output}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  ))}
+                </div>
+              )}
           </div>
         </ResizablePanel>
 
         <ResizableHandle withHandle />
 
+        {/* ==== Right: Code + Output ==== */}
         <ResizablePanel>
           <ResizablePanelGroup direction="vertical">
+            {/* Code Editor */}
             <ResizablePanel>
-              {/* Pass problemId to the editor via Zustand initialization */}
-              <CodeEditor problemId={problemId} />
+              <div className="flex flex-col h-full bg-neutral-900 border-b border-neutral-800">
+                <div className="px-4 py-2 bg-neutral-800 border-b border-neutral-700 text-sm font-medium text-purple-300">
+                  💻 Code Editor
+                </div>
+                <div className="flex-1">
+                  <CodeEditor problemId={problemId} />
+                </div>
+              </div>
             </ResizablePanel>
+
             <ResizableHandle withHandle />
+
+            {/* Output */}
             <ResizablePanel>
-              {/* Pass test cases as props to OutputWindow */}
-              <OutputWindow
-                testCases={
-                  Array.isArray(problem.examples)
-                    ? problem.examples
-                        .filter(
-                          (ex) =>
-                            ex &&
-                            typeof ex === "object" &&
-                            "input" in ex &&
-                            "output" in ex
-                        )
-                        .map(
-                          (ex) =>
-                            ({
+              <div className="flex flex-col h-full bg-neutral-900">
+                <div className="px-4 py-2 bg-neutral-800 border-b border-neutral-700 text-sm font-medium text-purple-300">
+                  📜 Output
+                </div>
+                <div className="flex-1 overflow-auto">
+                  <OutputWindow
+                    testCases={
+                      Array.isArray(problem.examples)
+                        ? problem.examples
+                            .filter(
+                              (ex) =>
+                                ex &&
+                                typeof ex === "object" &&
+                                "input" in ex &&
+                                "output" in ex
+                            )
+                            .map((ex) => ({
                               input: (ex as { input: string; output: string }).input,
                               output: (ex as { input: string; output: string }).output,
-                            } as { input: string; output: string })
-                        )
-                    : []
-                }
-              />
+                            }))
+                        : []
+                    }
+                  />
+                </div>
+              </div>
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>

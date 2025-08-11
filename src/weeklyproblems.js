@@ -9,14 +9,17 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
-const generate3Problems = async () => {
+const generate5Problems = async () => {
     const prompt = `
-Generate 3 coding problems in JSON format. Each problem must include:
-- title (string)
-- difficulty: "EASY", "MEDIUM", or "HARD"
-- description (string)
-- examples: array of { input: string, output: string }
-- testCases: array of { input: string, output: string }
+Generate 5 coding problems in JSON format. Each problem must include:
+ - title (string)
+ - difficulty: "HARD", "EASY", or "MEDIUM"
+ - description (string) - clear and concise problem statement
+ - constraints (array of strings) - numerical or logical limits for inputs
+ - tags (array of strings) - topic/category such as "Array", "Graph", "Dynamic Programming"
+ - hints (array of strings) -  small hints
+ - examples: array of { "input": string, "output": string, "explanation": string } - at least 2 examples per problem
+ - testCases: array of { "input": string, "output": string } - at least 3 test cases
 
 Output ONLY valid JSON, no explanations.
 `;
@@ -42,7 +45,7 @@ Output ONLY valid JSON, no explanations.
 // Step 2: Insert new week with problems into DB
 async function addWeeklyProblems() {
     try {
-        const problems = await generate3Problems();
+        const problems = await generate5Problems();
         const date = new Intl.DateTimeFormat('en-US', {
             weekday: 'long',
             year: 'numeric',

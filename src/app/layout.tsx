@@ -1,15 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignOutButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import {ClerkProvider} from '@clerk/nextjs'
 
 export const metadata: Metadata = {
   title: "Codemania",
