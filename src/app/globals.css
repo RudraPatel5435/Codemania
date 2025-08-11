@@ -8,6 +8,10 @@
   src: url('/Inter-VariableFont_opsz\,wght.ttf') format('truetype');
 }
 
+html,body {
+  height: 100%;
+}
+
 body {
   font-family: 'inter';
   background-color: #0A0A0A;

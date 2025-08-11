@@ -29,8 +29,7 @@ model Problem {
 
   // Users who solved this problem
   solves       Solve[]
-
-  relatedProblems Problem[] @relation("RelatedProblems")
+  comments    Comment[]
 }
 
 model User {

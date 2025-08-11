@@ -41,8 +41,8 @@ export default function CodeEditor({ problemId }: { problemId: number }) {
             <SelectValue placeholder="Select Language" />
           </SelectTrigger>
           <SelectContent className="bg-neutral-900 text-white border-neutral-700">
-            <SelectItem value="javascript">JavaScript</SelectItem>
             <SelectItem value="python">Python</SelectItem>
+            <SelectItem value="javascript">JavaScript</SelectItem>
             <SelectItem value="c">C</SelectItem>
             <SelectItem value="cpp">C++</SelectItem>
             <SelectItem value="csharp">C#</SelectItem>

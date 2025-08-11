@@ -12,16 +12,16 @@ const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 const generate5Problems = async () => {
     const prompt = `
 Generate 5 coding problems in JSON format. Each problem must include:
- - title (string)
+- title (string)
  - difficulty: "HARD", "EASY", or "MEDIUM"
- - description (string) - clear and concise problem statement
+ - description (string) - a clear, fully detailed and easy-to-understand problem statement. Make it understandable for beginners and cover all necessary details, even if it becomes long. Include necessary context, definitions, and explanations so the reader can fully understand the problem without prior knowledge.
  - constraints (array of strings) - numerical or logical limits for inputs
  - tags (array of strings) - topic/category such as "Array", "Graph", "Dynamic Programming"
  - hints (array of strings) -  small hints
- - examples: array of { "input": string, "output": string, "explanation": string } - at least 2 examples per problem
- - testCases: array of { "input": string, "output": string } - at least 3 test cases
+ - examples: array of { "input": string, "output": string, "explanation": string } - at least 2 examples per problem - input must be exactly what a user would type as program input, with no variable names, no equals sign, no extra quotes.
+ - testCases: array of { "input": string, "output": string } - at least 3 test cases - same input rule as above
 
-Output ONLY valid JSON, no explanations.
+Input ONLY valid JSON, Output ONLY valid JSON, no markdown, no explanations.
 `;
 
     const response = await ai.models.generateContent({

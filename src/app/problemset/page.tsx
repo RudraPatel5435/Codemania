@@ -1,7 +1,7 @@
 import DailyChallenges from '@/components/home/DailyChallenges'
 import React from 'react'
 import prisma from '../../../lib/prisma'
-import { ProblemList } from './ProblemList'
+import { ProblemList } from '../../components/home/ProblemList'
 
 const Page = async () => {
   const allProblems = await prisma.problem.findMany({});
