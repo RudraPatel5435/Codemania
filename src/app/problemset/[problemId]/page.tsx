@@ -3,11 +3,11 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import CodeEditor from "@/components/CodeEditor";
-import OutputWindow from "@/components/OutputWindow";
+import CodeEditor from "@/components/ProblemPage/CodeEditor";
+import OutputWindow from "@/components/ProblemPage/OutputWindow";
 import prisma from "../../../../lib/prisma";
 import { Info } from "lucide-react";
-import ProblemStatement from "@/components/ProblemStatement";
+import ProblemStatement from "@/components/ProblemPage/ProblemStatement";
 
 export default async function ProblemPage({ params }: { params: Promise<{ problemId: string }>; }) {
   const { problemId } = await params;
