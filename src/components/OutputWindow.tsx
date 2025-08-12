@@ -62,7 +62,7 @@ export default function OutputWindow({ testCases }: { testCases: TestCase[] }) {
   };
 
   return (
-    <div className="flex flex-col bg-neutral-900 border border-neutral-800 rounded-lg overflow-hidden h-full">
+    <div className="flex flex-col bg-neutral-900 border border-neutral-800 rounded-lg h-full">
       {/* ==== Toolbar ==== */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-neutral-800 bg-neutral-800">
         <span className="text-sm font-bold tracking-wide text-purple-400">

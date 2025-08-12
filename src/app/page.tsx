@@ -1,21 +1,19 @@
-"use client";
+'use client'
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { Protect } from "@clerk/nextjs";
 import {
   Code2,
   Users,
   Star,
-  HelpCircle,
   Lock,
   Crown,
   Twitter,
   Github,
-  ChevronDown,
   CircleQuestionMark,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
@@ -61,9 +59,10 @@ export default function HomePage() {
     { q: "What languages are supported?", a: "Popular languages: JS/TS, Python, C, C++, Java — and sneaky support for other JVM-based languages." },
     { q: "How does scoring work?", a: "Points depend on difficulty, speed, and style points (style points are made up but felt strongly)." },
   ];
+  
 
   return (
-    <div className="bg-neutral-950 text-white min-h-screen antialiased">
+    <div className="relative bg-neutral-950 text-white min-h-screen antialiased">
       {/* HERO */}
       <motion.section
         initial={{ opacity: 0, y: -20 }}

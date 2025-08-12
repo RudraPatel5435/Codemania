@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/navbar/Navbar";
-import {ClerkProvider} from '@clerk/nextjs'
+import Navbar from "@/components/Navbar";
+import { ClerkProvider} from '@clerk/nextjs'
 
 export const metadata: Metadata = {
   title: "Codemania",

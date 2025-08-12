@@ -1,3 +1,4 @@
+import { starterCode } from '@/constants/starteCode';
 import { create } from 'zustand';
 
 interface CodeStore {
@@ -14,7 +15,7 @@ interface CodeStore {
 
 export const useCodeStore = create<CodeStore>((set) => ({
     localProblemId: 0,
-    code: "// start coding here...",
+    code: starterCode.python,
     language: "python",
     output: "",
 

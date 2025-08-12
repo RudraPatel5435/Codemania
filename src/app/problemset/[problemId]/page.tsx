@@ -66,42 +66,28 @@ export default async function ProblemPage({
                   <h2 className="text-lg font-bold text-purple-300">
                     Examples
                   </h2>
-                  {problem.examples.map(
-                    (example, index) =>
-                      example &&
-                      typeof example === "object" &&
-                      "input" in example &&
-                      "output" in example && (
-                        <div
-                          key={index}
-                          className="bg-neutral-800/80 border border-neutral-700 rounded-lg p-5 space-y-3 shadow-inner"
-                        >
-                          <p className="font-medium text-gray-400">
-                            Example {index + 1}
+                  {problem.examples.map((example, index) => {
+                    if (!example || typeof example !== "object" || !("input" in example) || !("output" in example)) {
+                      return null;
+                    }
+                    const { input, output } = example as { input: string; output: string };
+                    return (
+                      <div
+                        key={index}
+                        className="bg-neutral-800/80 border border-neutral-700 rounded-lg p-5 space-y-3 shadow-inner"
+                      >
+                        <p className="font-medium text-gray-400">Example {index + 1}</p>
+                        <div className="pl-4 space-y-1">
+                          <p>
+                            <span className="font-semibold text-purple-300">Input:</span> {input}
                           </p>
-                          <div className="pl-4 space-y-1">
-                            <p>
-                              <span className="font-semibold text-purple-300">
-                                Input:
-                              </span>{" "}
-                              {
-                                (example as { input: string; output: string })
-                                  .input
-                              }
-                            </p>
-                            <p>
-                              <span className="font-semibold text-purple-300">
-                                Output:
-                              </span>{" "}
-                              {
-                                (example as { input: string; output: string })
-                                  .output
-                              }
-                            </p>
-                          </div>
+                          <p>
+                            <span className="font-semibold text-purple-300">Output:</span> {output}
+                          </p>
                         </div>
-                      )
-                  )}
+                      </div>
+                    );
+                  })}
                 </section>
               )}
             </div>
@@ -134,23 +120,23 @@ export default async function ProblemPage({
                   testCases={
                     Array.isArray(problem.testCases)
                       ? problem.testCases
-                          .filter(
-                            (ex) =>
-                              ex &&
-                              typeof ex === "object" &&
-                              "input" in ex &&
-                              "output" in ex
-                          )
-                          .map(
-                            (ex) =>
-                              ({
-                                input: (ex as { input: string; output: string })
-                                  .input,
-                                output: (
-                                  ex as { input: string; output: string }
-                                ).output,
-                              } as { input: string; output: string })
-                          )
+                        .filter(
+                          (ex) =>
+                            ex &&
+                            typeof ex === "object" &&
+                            "input" in ex &&
+                            "output" in ex
+                        )
+                        .map(
+                          (ex) =>
+                          ({
+                            input: (ex as { input: string; output: string })
+                              .input,
+                            output: (
+                              ex as { input: string; output: string }
+                            ).output,
+                          } as { input: string; output: string })
+                        )
                       : []
                   }
                 />

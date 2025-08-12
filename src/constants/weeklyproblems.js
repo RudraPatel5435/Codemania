@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import cron from "node-cron";
-import fetch from "node-fetch"; // or your HTTP client
 import { GoogleGenAI } from "@google/genai";
 
 const prisma = new PrismaClient();
@@ -19,7 +18,7 @@ Generate 5 coding problems in JSON format. Each problem must include:
  - tags (array of strings) - topic/category such as "Array", "Graph", "Dynamic Programming"
  - hints (array of strings) -  small hints
  - examples: array of { "input": string, "output": string, "explanation": string } - at least 2 examples per problem - input must be exactly what a user would type as program input, with no variable names, no equals sign, no extra quotes.
- - testCases: array of { "input": string, "output": string } - at least 3 test cases - same input rule as above
+ - testCases: array of { "input": string, "output": string } - at least 5 test cases - include some edge cases - same input rule as above
 
 Input ONLY valid JSON, Output ONLY valid JSON, no markdown, no explanations.
 `;
