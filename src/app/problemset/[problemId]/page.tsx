@@ -32,7 +32,8 @@ export default async function ProblemPage({ params }: { params: Promise<{ proble
   };
 
   return (
-    <div className="bg-neutral-950 text-white h-screen">
+    // <div className="bg-neutral-950 text-white h-screen">
+    <div className="bg-neutral-950 text-white">
       <ResizablePanelGroup direction="horizontal">
         {/* ==== Left Panel: Problem Statement ==== */}
         <ResizablePanel className="border-r border-neutral-800 bg-neutral-900">

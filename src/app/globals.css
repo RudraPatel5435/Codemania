@@ -8,7 +8,8 @@
   src: url('/Inter-VariableFont_opsz\,wght.ttf') format('truetype');
 }
 
-html,body {
+html,
+body {
   height: 100%;
 }
 
@@ -24,8 +25,10 @@ body {
 
 /* For Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 @theme inline {
@@ -139,6 +142,7 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

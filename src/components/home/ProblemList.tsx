@@ -67,15 +67,15 @@ export function ProblemList({ problems }: { problems: any[] }) {
             `}
           >
             {/* Left: Solved Icon + Title */}
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               {problem.id % 2 !== 0
                 ? <CheckCircle2 className="text-green-400" size={22} />
                 : <Circle className="text-[#C27BFF]/30" size={22} />
-              }
+              } */}
               <span className="font-semibold text-white group-hover:text-[#C27BFF] transition-colors">
                 {problem.id}. {problem.title}
               </span>
-            </div>
+            {/* </div> */}
             {/* Difficulty tag */}
             <span className={`px-3 py-1 rounded-full text-xs font-bold ${difficultyColors[problem.difficulty]}`}>
               {problem.difficulty}
