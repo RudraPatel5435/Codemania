@@ -1,7 +1,7 @@
-"use client";
+// "use client";
 
 import React from "react";
-import { Protect } from "@clerk/nextjs";
+// import { Protect } from "@clerk/nextjs";
 import {
     Accordion,
     AccordionContent,
@@ -39,14 +39,14 @@ export default function HintsSection({ hints }: Props) {
                         <AccordionTrigger>Hint {index + 1}</AccordionTrigger>
 
                         <AccordionContent>
-                            <Protect
-                                plan={"premium"}
+                            {/* <Protect
+                                plan={"free"}
                                 fallback={<UpgradeMessage />}
-                            >
+                            > */}
                                 <div className="text-sm text-gray-200 leading-relaxed">
                                     {hint}
                                 </div>
-                            </Protect>
+                            {/* </Protect> */}
                         </AccordionContent>
                     </AccordionItem>
                 ))}

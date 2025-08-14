@@ -78,4 +78,4 @@ cron.schedule("0 0 * * 1", () => {
 
 
 // Optional: Run immediately once on start for testing
-addWeeklyProblems()
+// addWeeklyProblems()

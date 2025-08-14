@@ -41,6 +41,8 @@ model User {
   joinDate      DateTime   @default(now())
   
   streak        Int        @default(0)
+  maxStreak     Int        @default(0)
+  lastSolved    DateTime
   totalSolved   Int        @default(0)
 
   // Problems solved with details

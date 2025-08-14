@@ -3,8 +3,8 @@ import React from 'react'
 import { Code2, Flame } from 'lucide-react'
 
 const Navbar = () => {
-    const streak = 0
-    const maxStreak = 1
+    // const streak = 0
+    // const maxStreak = 1
     return (
         <header
             className="sticky top-0 z-50 px-4 md:px-20 py-4 flex items-center justify-between
@@ -48,7 +48,7 @@ const Navbar = () => {
                 </Link>
 
                 {/* Streak pill with hover card */}
-                <div className="relative inline-block group">
+                {/* <div className="relative inline-block group">
                     <div
                         className="flex items-center gap-2 md:gap-3 
                    px-3 md:px-5 py-1.5 md:py-2 
@@ -68,7 +68,6 @@ const Navbar = () => {
                         opacity-0 group-hover:opacity-100 blur-sm transition"></div>
                     </div>
 
-                    {/* Hover card */}
                     <div
                         className="absolute left-1/2 top-full mt-2 w-40 md:w-48 bg-neutral-900 rounded-lg shadow-lg 
                    border border-red-500/40 text-white text-center font-semibold text-xs md:text-sm 
@@ -78,7 +77,7 @@ const Navbar = () => {
                     >
                         Max Streak: {maxStreak}
                     </div>
-                </div>
+                </div> */}
             </nav>
         </header>
 

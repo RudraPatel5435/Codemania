@@ -239,7 +239,7 @@ export default function HomePage() {
       </section>
 
       {/* DAILY STREAK SECTION */}
-      <section className="bg-gradient-to-r from-purple-900/20 to-blue-900/20 py-20 px-6 md:px-20">
+      {/* <section className="bg-gradient-to-r from-purple-900/20 to-blue-900/20 py-20 px-6 md:px-20">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -269,7 +269,7 @@ export default function HomePage() {
             </div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* MEET THE GUY SECTION */}
       <section className="max-w-4xl mx-auto px-6 md:px-20 py-20 text-center">
